@@ -6,31 +6,25 @@ import net.minecraft.entity.attribute.EntityAttributeModifier;
 import net.minecraft.entity.attribute.EntityAttributes;
 import net.minecraft.entity.effect.StatusEffect;
 import net.minecraft.entity.effect.StatusEffectCategory;
-import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.particle.ParticleTypes;
 
 public class SpicyEffect extends StatusEffect {
+    public static int DURATION;
+
     public SpicyEffect() {
         super(StatusEffectCategory.HARMFUL, 0xf03622);
     }
 
     @Override
     public boolean canApplyUpdateEffect(int duration, int amplifier) {
-        return duration % 320 == 0;
+        DURATION = duration;
+        return true;
     }
 
     @Override
     public void applyUpdateEffect(LivingEntity entity, int amplifier) {
         if (!entity.getWorld().isClient()) {
-            entity.setFireTicks(20 << amplifier);
-
-            entity.getWorld().addParticle(
-                    ParticleTypes.FLAME,
-                    entity.getParticleX(1.0),
-                    entity.getRandomBodyY(),
-                    entity.getParticleZ(1.0),
-                    0.0, 0.05, 0.0
-            );
+            entity.setFireTicks(DURATION);
         }
     }
 
